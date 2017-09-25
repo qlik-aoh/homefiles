@@ -120,3 +120,4 @@ export PS1='\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[31m\]$(__git_ps1)
 
 
 alias homefiles='/usr/bin/git --git-dir=/home/aoh/.cfg/ --work-tree=/home/aoh'
+alias hf='homefiles'
