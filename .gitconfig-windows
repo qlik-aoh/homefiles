@@ -1,0 +1,18 @@
+[core]
+    autocrlf = true
+    excludesfile = d:\\aoh\\gitignore_global.txt
+
+[diff]
+    tool = bc3
+    
+[merge]
+    tool = bc3
+    
+[difftool "bc3"]
+    path = c:/Program Files/Beyond Compare 4/bcomp.exe
+    
+[mergetool "bc3"]
+    path = c:/Program Files/Beyond Compare 4/bcomp.exe
+    
+[mergetool "kdiff3"]
+    cmd = \"C:\\\\Program Files\\\\KDiff3\\\\kdiff3\" $BASE $LOCAL $REMOTE -o $MERGED

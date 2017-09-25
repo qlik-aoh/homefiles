@@ -1,0 +1,35 @@
+[user]
+    name = Markus Helgesson
+    email = Markus.Helgesson@qlik.com
+    jenkinstoken = ba81304f1c814337e124621c7cfa8fdb
+    trigram = aoh
+
+[core]
+    # Tell less to soft wrap long lines
+    pager = less -r
+    
+[difftool]
+    prompt = false
+
+[push]
+    default = simple
+
+[diff]
+    renames = true
+    renamelimit = 80000
+
+[color]
+    diff = auto
+    branch = auto
+    status = auto
+
+[include]
+    # This should be a symlink to the actual platform config
+    path = .gitconfig-platform
+
+[include]
+    path = .gitconfig-aliases
+    
+[core]
+    autocrlf = true
+    excludesfile = d:\\aoh\\gitignore_global.txt

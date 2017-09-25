@@ -1,0 +1,107 @@
+# To include this file in you gitconfig, copy it as git_aliases next to your .gitconfig and add
+# [include]
+#     path = git_aliases
+
+[alias]
+    # Define new aliases with $ git alias new_alias original_command
+    # Note that you must enclose the entire original_command in single or double quotes, so that the shell interprets it as a single expression
+    alias = "!sh -c '[ $# = 2 ] && git config --global alias.\"$1\" \"$2\" && exit 0 || echo \"usage: git alias <new alias> <original command>\" >&2 && exit 1' -"
+    
+    # Get a list of your defined aliases
+    aliases = !git config --get-regexp 'alias.*' #| colr 1 6 | sed 's/[ ]/ = /'
+    
+    # Shortcuts
+    st      = status
+    br      = branch
+    co      = checkout
+
+    c       = commit
+    amend   = commit --amend
+
+    d       = diff --color-words
+    dc      = diff --cached --color-words
+
+    da      = diffall
+    
+    dt      = difftool
+    mt      = mergetool  
+
+    f       = fetch
+    fa      = fetch --all
+
+    # reset hard to latest commit
+    rh = reset --hard
+
+    # reset hard to latest on upstream branch from origin. @{u} = upstream
+    rho = "!sh -c 'git fetch && git reset --hard @{u} && exit 0 || exit 1' -"
+
+    # reset hard to latest on master
+    rhm = "!sh -c 'git fetch && git reset --hard origin/master && exit 0 || exit 1' -"
+
+    # reset hard to latest on green master
+    rhg = "!sh -c 'git fetch && git reset --hard origin/green-master-boc && exit 0 || exit 1' -"
+
+    # reset hard to latest on green-master-nightly
+    rhgn = "!sh -c 'git fetch && git reset --hard origin/green-master-nightly && exit 0 || exit 1' -"
+
+    # When applying a patch, automagically fix whitespace issues and add the other changes as normal conflicts
+    ap = apply --3way --whitespace=fix
+    
+    # create a new branch from the current one
+    nb = checkout -b
+    
+    # update from origin and create a new branch from green master pointing to the remote branch with the same name 
+    nm = "!sh -c '[ $# = 1 ] && git fetch && git checkout -B \"$1\" origin/master && exit 0 || echo \"usage: git nm <name of branch>\" >&2 && exit 1' -"
+
+    # update from origin and create a new branch from green master pointing to the remote branch with the same name 
+    ng = "!sh -c '[ $# = 1 ] && git fetch && git checkout -B \"$1\" origin/green-master-boc && exit 0 || echo \"usage: git ng <name of branch>\" >&2 && exit 1' -"
+
+    # update from origin and create a new branch from green-master-nightly pointing to the remote branch with the same name 
+    ngn = "!sh -c '[ $# = 1 ] && git fetch && git checkout -B \"$1\" origin/green-master-nightly && exit 0 || echo \"usage: git ngn <name of branch>\" >&2 && exit 1' -"
+
+    # rebase interactive (change history)    
+    ri = rebase -i
+
+    # update from origin and rebase current branch from master
+    rim = "!sh -c 'git fetch && git rebase -i origin/master && exit 0 || exit 1' -"
+
+    # update from origin and rebase current branch from green master
+    rig = "!sh -c 'git fetch && git rebase -i origin/green-master-boc && exit 0 || exit 1' -"
+
+    # update from origin and rebase current branch from green-master-nightly
+    rign = "!sh -c 'git fetch && git rebase -i origin/green-master-nightly && exit 0 || exit 1' -"
+            
+    # update from origin and rebase current branch from origin. @{u} = upstream
+    rio = "!sh -c 'git fetch && git rebase -i @{u} && exit 0 || exit 1' -"
+    
+    recon = rebase --continue
+    reab = rebase --abort
+ 
+    chp     = cherry-pick
+    chpcon  = cherry-pick --continue
+    chpab   = cherry-pick --abort
+
+    # push branch to remote branch (create it if it does not exist) of same name on origin and set local branch to track it
+    pu = push -u origin
+    puh = push -u origin HEAD
+    puf = push -f origin
+
+
+    # List commits in short form, with colors and branch/tag annotations
+    #ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+    l = log --decorate
+    
+    # List commits showing changed files
+    lf = log --decorate --numstat
+    
+    # List oneline commits showing dates
+    ld = log --decorate --date=short
+
+    # List oneline commits showing relative dates
+    lr = log --decorate --date=relative
+
+    # default look for short git log
+    ls = log --decorate --oneline
+    
+    # oneline with branch graph
+    lgraph = log --decorate --oneline --graph

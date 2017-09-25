@@ -1,0 +1,8 @@
+[core]
+    autocrlf = input
+
+[diff]
+    tool = kdiff3
+    
+[merge]
+    tool = kdiff3
