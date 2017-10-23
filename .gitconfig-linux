@@ -6,3 +6,14 @@
     
 [merge]
     tool = kdiff3
+
+[difftool "kdiff3"]
+    cmd = kdiff3 $LOCAL $REMOTE --output $MERGED
+    keepBackup = false
+    trustExitCode = false
+
+[mergetool "kdiff3"]
+    cmd = kdiff3 $LOCAL $REMOTE --output $MERGED
+    keepBackup = false
+    trustExitCode = false
+
