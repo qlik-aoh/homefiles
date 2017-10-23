@@ -1,0 +1,81 @@
+{
+    // Stop the annoying "ALTGR sends cursor left" behavior!
+    "keyboard.dispatch": "keyCode",
+    "editor.renderWhitespace": "boundry",
+    "editor.rulers": [80, 120],
+    "editor.find.autoFindInSelection": true,
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": true,
+        "strings": false
+    },
+    "editor.formatOnType": true,
+    "editor.formatOnPaste": true,
+    "window.restoreWindows": "all",
+
+    // Default false, put here to remember it exists
+    "debug.allowBreakpointsEverywhere": false,
+    
+    "debug.inlineValues": true,
+    
+       // The path to a folder in which the CMake archives are downloaded and extracted
+    "cmake-tools-helper.cmake_download_path": "/home/aoh/.vscode/extensions/maddouri.cmake-tools-helper-0.1.1/cmake_download",
+
+    "cmake.defaultVariants": {
+        "buildType": {
+            "default$": "Sense_Debug",
+            "description$": "The build type to use",
+            "debug": {
+                "oneWordSummary$": "Sense_Debug",
+                "description$": "Emit debug information without performing optimizations",
+                "buildType": "SENSE_DEBUG",
+                "settings": {
+                    "CMAKE_BUILD_TYPE": "SENSE_DEBUG"
+                }
+            },
+            "release": {
+                "oneWordSummary$": "Sense_Release",
+                "description$": "Enable optimizations, omit debug info",
+                "buildType": "SENSE_RELEASE",
+                "settings": {
+                    "CMAKE_BUILD_TYPE": "SENSE_RELEASE"
+                }
+            }
+        }
+    },
+
+    // ${buildType} does not work correctly in combination with CMakeServer.
+    // This will hopefully be fixed but for now I hard code the build dir
+    // and have to remember to update it if I use Release.
+    // "cmake.buildDirectory": "${workspaceRoot}/build/${buildType}",
+    // "cmake.buildDirectory": "${workspaceRoot}/BUILD-RELEASE",
+    "cmake.buildDirectory": "${workspaceRoot}/BUILD-DEBUG",
+    
+    //"cmake.useCMakeServer": false,
+    "cmake.loggingLevel": "verbose",
+
+    "cmake.debugConfig": {
+        "args": [
+            "--DesktopDebug",
+            "--MigrationPort -1"
+        ]
+    },
+
+    // CMake variables to set on the command line
+    // "cmake.configureSettings": {},
+
+    // Additional arguments to pass to CMake when configuring
+    // "cmake.configureArgs": [],
+
+    // Environment variables to set when running CMake commands
+    // "cmake.environment": {},
+    
+    // Additional arguments to pass to CMake when building
+    // "cmake.buildArgs": [],
+
+
+    "C_Cpp.intelliSenseEngine": "Default",
+
+    // Keep this last (to avoid changing the ending ,)
+    "lldb.executable": "lldb-3.9"
+}
