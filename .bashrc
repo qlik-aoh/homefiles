@@ -8,16 +8,20 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
+# History settings for allowing shared persistent history between several sessions
+# while still keeping the local history of the current shell.
+#
+# Based on
+# https://unix.stackexchange.com/questions/1288/preserve-bash-history-in-multiple-terminal-windows
+# https://www.digitalocean.com/community/tutorials/how-to-use-bash-history-commands-and-expansions-on-a-linux-vps
+# https://stackoverflow.com/questions/338285/prevent-duplicates-from-being-saved-in-bash-history#answer-7449399
 
-# append to the history file, don't overwrite it
-shopt -s histappend
+export HISTSIZE=100000                    # big big history
+export HISTFILESIZE=100000                # big big history
+export HISTCONTROL=ignoreboth:erasedups   # no duplicate entries
+shopt -s histappend                       # append history file
+export PROMPT_COMMAND="history -a"        # update histfile after every command
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -85,12 +89,13 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
+alias ll='ls -l'
+alias la='ls -A'
+alias lla='ls -lA'
+alias l='ls -CF'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -119,5 +124,18 @@ export CCACHE_PREFIX=distcc
 export PS1='\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\n\$ '
 
 
-alias homefiles='/usr/bin/git --git-dir=/home/aoh/.cfg/ --work-tree=/home/aoh'
+alias homefiles='/usr/bin/git --git-dir=/home/aoh/.homefiles/ --work-tree=/home/aoh'
 alias hf='homefiles'
+
+# ssh key forwarding forwards to a new SSH_AUTH_SOCK every connection, but a tmux/screen session
+# typically lives more than one connection.
+# As a workaround, use a symlink to point to the active socket.
+# https://unix.stackexchange.com/questions/75681/why-do-i-have-to-re-set-env-vars-in-tmux-when-i-re-attach 
+SOCK="/tmp/ssh-agent-$USER-screen"
+if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]
+then
+	rm -f /tmp/ssh-agent-$USER-screen
+	ln -sf $SSH_AUTH_SOCK $SOCK
+	export SSH_AUTH_SOCK=$SOCK
+fi
+
