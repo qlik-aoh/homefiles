@@ -30,6 +30,3 @@
 [include]
     path = .gitconfig-aliases
     
-[core]
-    autocrlf = true
-    excludesfile = d:\\aoh\\gitignore_global.txt
