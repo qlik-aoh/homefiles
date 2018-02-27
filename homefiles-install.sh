@@ -6,7 +6,7 @@
 # https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
 
 function homefiles {
-	/usr/bin/git --git-dir=$HOME/.homefiles/ --work-tree=$HOME $@
+	git --git-dir=$HOME/.homefiles/ --work-tree=$HOME $@
 }
 
 git clone --bare git@github.com:qlik-aoh/homefiles.git $HOME/.homefiles
