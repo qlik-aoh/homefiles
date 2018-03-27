@@ -117,9 +117,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH=/usr/lib/distcc:$PATH
-export PATH=/usr/lib/ccache:$PATH
-export CCACHE_PREFIX=distcc
+#export PATH=/usr/lib/distcc:$PATH
+#export PATH=/usr/lib/ccache:$PATH
+#export CCACHE_PREFIX=distcc
+
+export PATH=${HOME}/bin:${PATH}
 
 export PS1='\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\n\$ '
 
