@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 
 # Script for setting up a new environment with homefiles from repo.
 # Based on articles https://news.ycombinator.com/item?id=11071754
@@ -17,8 +18,8 @@ else
 	echo "Backing up pre-existing dot files to .config-backup.";
 	mkdir -p .config-backup
 	homefiles checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+	homefiles checkout --quiet
 fi;
 
-homefiles checkout --quiet
 homefiles config status.showUntrackedFiles no
 
