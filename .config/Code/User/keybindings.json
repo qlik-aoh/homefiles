@@ -1,19 +1,41 @@
 // Place your key bindings in this file to overwrite the defaults
 [
+    { "key": "f9", "command": "-sortLines.sortLines", "when": "editorTextFocus" },
     {
-        "key": "alt+left",
-        "command": "workbench.action.navigateBack"
+        "key": "ctrl+alt+s",
+        "command": "sortLines.sortLinesNatural",
+        "when": "editorTextFocus"
     },
     {
-        "key": "ctrl+alt+-",
-        "command": "-workbench.action.navigateBack"
+        "key": "alt+\\",
+        "command": "workbench.action.splitEditor"
     },
     {
-        "key": "alt+right",
-        "command": "workbench.action.navigateForward"
+        "key": "ctrl+\\",
+        "command": "-workbench.action.splitEditor"
     },
     {
-        "key": "ctrl+shift+-",
-        "command": "-workbench.action.navigateForward"
+        "key": "ctrl+\\",
+        "command": "editor.action.jumpToBracket",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+shift+\\",
+        "command": "-editor.action.jumpToBracket",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+shift+\\",
+        "command": "editor.action.selectToBracket"
+    },
+    {
+        "key": "alt+\\",
+        "command": "workbench.action.terminal.split",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "ctrl+\\",
+        "command": "-workbench.action.terminal.split",
+        "when": "terminalFocus"
     }
 ]

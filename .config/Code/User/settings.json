@@ -1,81 +1,109 @@
 {
     // Stop the annoying "ALTGR sends cursor left" behavior!
     "keyboard.dispatch": "keyCode",
-    "editor.renderWhitespace": "boundry",
+
+    "window.restoreWindows": "all",
+    
+    "editor.renderWhitespace": "boundary",
     "editor.rulers": [80, 120],
     "editor.find.autoFindInSelection": true,
     "editor.quickSuggestions": {
         "other": true,
         "comments": true,
-        "strings": false
+        "strings": true
     },
-    "editor.formatOnType": true,
-    "editor.formatOnPaste": true,
-    "window.restoreWindows": "all",
-
-    // Default false, put here to remember it exists
-    "debug.allowBreakpointsEverywhere": false,
+    "editor.formatOnType": false,
+    "editor.formatOnPaste": false,
+    "editor.fontSize": 14,
+    "editor.wordWrap": "on",
     
     "debug.inlineValues": true,
     
-       // The path to a folder in which the CMake archives are downloaded and extracted
+    "C_Cpp.intelliSenseEngineFallback": "Disabled",
+    // "C_Cpp.intelliSenseEngine": "Tag Parser",
+    "C_Cpp.intelliSenseEngine": "Default",
+    //"C_Cpp.errorSquiggles": "Disabled",
+
+
+
+    // The path to a folder in which the CMake archives are downloaded and extracted
     "cmake-tools-helper.cmake_download_path": "/home/aoh/.vscode/extensions/maddouri.cmake-tools-helper-0.1.1/cmake_download",
 
-    "cmake.defaultVariants": {
-        "buildType": {
-            "default$": "Sense_Debug",
-            "description$": "The build type to use",
-            "debug": {
-                "oneWordSummary$": "Sense_Debug",
-                "description$": "Emit debug information without performing optimizations",
-                "buildType": "SENSE_DEBUG",
-                "settings": {
-                    "CMAKE_BUILD_TYPE": "SENSE_DEBUG"
-                }
-            },
-            "release": {
-                "oneWordSummary$": "Sense_Release",
-                "description$": "Enable optimizations, omit debug info",
-                "buildType": "SENSE_RELEASE",
-                "settings": {
-                    "CMAKE_BUILD_TYPE": "SENSE_RELEASE"
-                }
-            }
-        }
+    // "cmake.useCMakeServer": false,
+
+    // "cmake.loggingLevel": "verbose",
+    "cmake.loggingLevel": "debug",
+    "cmake.buildDirectory": "${workspaceRoot}/build/${buildType}",
+    "cmake.ctest.parallelJobs": 4,
+    "cmake.preferredGenerators": [
+        "Unix Makefiles",
+        // "Ninja"
+    ],
+    "cmake.configureSettings": {
+        "GRADLE_BUILD": "ON",
+        "TBB_INCLUDE_PATH": "${workspaceRoot}/build/packages/tbb/include",
+        "TBB_LIB_PATH": "${workspaceRoot}/build/packages/tbb/lib",
+        "CROARING_INCLUDE_DIR": "${workspaceRoot}/build/packages/croaring/include/croaring",
+        "CROARING_LIB_DIR": "${workspaceRoot}/build/packages/croaring/lib",
+        "CROARING_PATH": "${workspaceRoot}/build/packages/croaring/include/croaring",
+        "DS2I_INCLUDE_PATH": "${workspaceRoot}/build/packages/ds2i/include/ds2i",
+        "DS2I_LIB_PATH": "${workspaceRoot}/build/packages/ds2i/include/ds2i",
+        "ZLIB_LIB_PATH": "${workspaceRoot}/build/packages/zlib/lib",
+        "ZLIB_INCLUDE_PATH": "${workspaceRoot}/build/packages/zlib/include",
+        "WEBHDFS_INCLUDE_DIR": "${workspaceRoot}/build/packages/webhdfs-cpp/include",
+        "WEBHDFS_LIB_DIR": "${workspaceRoot}/build/packages/webhdfs-cpp/lib",
+        "WEBHDFS_BIN_DIR": "${workspaceRoot}/build/packages/webhdfs-cpp/bin",
+        "FARMHASH_INCLUDE_DIR": "${workspaceRoot}/build/packages/farmhash/include",
+        "FARMHASH_LIB_DIR": "${workspaceRoot}/build/packages/farmhash/lib",
+        "FASTPFOR_INCLUDE_PATH": "${workspaceRoot}/build/packages/FastPFor/include",
+        "FASTPFOR_LIB_PATH": "${workspaceRoot}/build/packages/FastPFor/lib",
+        "JSONCPP_INCLUDE_DIR": "${workspaceRoot}/build/packages/jsoncpp/include",
+        "JSONCPP_LIB_DIR": "${workspaceRoot}/build/packages/jsoncpp/lib",
+        "SPDLOG_INCLUDE_DIR": "${workspaceRoot}/build/packages/spdlog/include",
+        "ROCKSDB_INCLUDE_DIR": "${workspaceRoot}/build/packages/rocksdb/include",
+        "ROCKSDB_LIB_DIR": "${workspaceRoot}/build/packages/rocksdb/lib",
+        "GTEST_INCLUDE_DIR": "${workspaceRoot}/build/packages/googletest/include",
+        "GTEST_LIB_DIR": "${workspaceRoot}/build/packages/googletest/lib",
+        "BROTLI_INCLUDE_DIR": "${workspaceRoot}/build/packages/brotli/include",
+        "BROTLI_LIB_DIR": "${workspaceRoot}/build/packages/brotli/lib",
+        "LZ4_INCLUDE_DIR": "${workspaceRoot}/build/packages/lz4/include",
+        "LZ4_LIB_DIR": "${workspaceRoot}/build/packages/lz4/lib",
+        "ZSTD_INCLUDE_DIR": "${workspaceRoot}/build/packages/zstd/include",
+        "ZSTD_LIB_DIR": "${workspaceRoot}/build/packages/zstd/lib",
+        "SNAPPY_INCLUDE_DIR": "${workspaceRoot}/build/packages/snappy/include",
+        "SNAPPY_LIB_DIR": "${workspaceRoot}/build/packages/snappy/lib",
+        "SUCCINCT_INCLUDE_PATH": "${workspaceRoot}/build/packages/succinct/include",
+        "SUCCINCT_LIB_PATH": "${workspaceRoot}/build/packages/succinct/lib",
+        "ARROW_INCLUDE_DIR": "${workspaceRoot}/build/packages/arrow/include",
+        "ARROW_LIB_DIR": "${workspaceRoot}/build/packages/arrow/lib",
+        "THRIFT_INCLUDE_DIR": "${workspaceRoot}/build/packages/thrift/include",
+        "THRIFT_LIB_DIR": "${workspaceRoot}/build/packages/thrift/lib",
+        "PARQUET_CPP_INCLUDE_DIR": "${workspaceRoot}/build/packages/parquet-cpp/include",
+        "PARQUET_CPP_LIB_DIR": "${workspaceRoot}/build/packages/parquet-cpp/lib",
+        "JEMALLOC_INCLUDE_PATH": "${workspaceRoot}/build/packages/jemalloc/include",
+        "JEMALLOC_LIB_PATH": "${workspaceRoot}/build/packages/jemalloc/lib",
+        "CARES_LIB_DIR": "${workspaceRoot}/build/packages/cares/lib",
+        "BOOST_ROOT": "${workspaceRoot}/build/packages/boost",
+        "BOOST_LIB_DIR": "${workspaceRoot}/build/packages/boost/lib",
+        "PROTOBUF_ROOT_DIR": "${workspaceRoot}/build/packages/protobuf",
+        "PROTOBUF_LIB_DIR": "${workspaceRoot}/build/packages/protobuf/lib",
+        "GRPC_ROOT_DIR": "${workspaceRoot}/build/packages/grpc",
+        "GRPC_INCLUDE_DIR": "${workspaceRoot}/build/packages/grpc/include",
+        "GRPC_LIBRARY_DIR": "${workspaceRoot}/build/packages/grpc/lib/Release",
+        "GRPC_BIN_DIR": "${workspaceRoot}/build/packages/grpc/bin/Release",
+        "CURL_LIBRARY": "${workspaceRoot}/build/packages/libcurl/lib/libcurl.a",
+        "CURL_INCLUDE_DIR": "${workspaceRoot}/build/packages/libcurl/include",
+        "CONCURRENTQUEUE_INCLUDE_DIR": "${workspaceRoot}/build/packages/concurrentqueue",
+        "USE_SSE4_2": "ON",
+        "CMAKE_C_COMPILER": "cc",
+        "CMAKE_CXX_COMPILER": "c++",
+        "CMAKE_CXX_FLAGS": "-stdlib=libc++ -std=c++14 -Wno-pragma-once-outside-header",
     },
-
-    // ${buildType} does not work correctly in combination with CMakeServer.
-    // This will hopefully be fixed but for now I hard code the build dir
-    // and have to remember to update it if I use Release.
-    // "cmake.buildDirectory": "${workspaceRoot}/build/${buildType}",
-    // "cmake.buildDirectory": "${workspaceRoot}/BUILD-RELEASE",
-    "cmake.buildDirectory": "${workspaceRoot}/BUILD-DEBUG",
-    
-    //"cmake.useCMakeServer": false,
-    "cmake.loggingLevel": "verbose",
-
-    "cmake.debugConfig": {
-        "args": [
-            "--DesktopDebug",
-            "--MigrationPort -1"
-        ]
+    "gitlens.advanced.messages": {
+        "suppressShowKeyBindingsNotice": true
     },
-
-    // CMake variables to set on the command line
-    // "cmake.configureSettings": {},
-
-    // Additional arguments to pass to CMake when configuring
-    // "cmake.configureArgs": [],
-
-    // Environment variables to set when running CMake commands
-    // "cmake.environment": {},
-    
-    // Additional arguments to pass to CMake when building
-    // "cmake.buildArgs": [],
-
-
-    "C_Cpp.intelliSenseEngine": "Default",
-
-    // Keep this last (to avoid changing the ending ,)
-    "lldb.executable": "lldb-3.9"
+    "workbench.colorTheme": "Visual Studio Dark",
+    "explorer.confirmDelete": false,
+    "window.zoomLevel": -1,
+    "gitlens.historyExplorer.enabled": true
 }
