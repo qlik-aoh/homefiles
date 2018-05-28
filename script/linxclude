@@ -1,0 +1,269 @@
+#!/usr/bin/env python3
+# -*- mode: python -*-
+
+"""
+Name : linxclude
+
+Script for making include statements linux compliant.
+
+Working folder assumed to be the top of the repo.
+(ie the folder having a prod folder)"""
+
+def usage():
+    print("""
+Usage: linxclude <cmd> <flags>
+    <cmd>
+       --slash : Replace backslash in include statements with forward slash
+       --quote : Ensure proper "..." or <...> usage:
+                 "..." : files in  \""""+ENGINE_SRC+"""\"
+                         but not in \"""" +PACKAGES+"""\"
+                 <...> : all other files.
+       --case  : Ensure filename in include statement is identical to
+                 corresponding file in the file system.
+       --all   : Shortcut for --slash --quote --case
+
+    <flags>
+       --dry   : Dry run. Analyze without changing any files.
+       --win   : Incorporate windows framework files
+       --break : Halt execution if included file's path is not resolved.
+                 Will occur if framework files aren't incorporated.
+""")
+
+import glob
+import logger as log
+import os
+import re
+import sys
+
+#--------------------------------------
+# "Constants"
+#--------------------------------------
+ENGINE_SRC = 'prod/data/Engine/src/'
+PACKAGES   = ENGINE_SRC + 'packages/'
+
+#--------------------------------------
+# Run time config
+#--------------------------------------
+cfg_dry   = False
+cfg_break = False
+cfg_win   = False
+
+cfg_slash = False
+cfg_quote = False
+cfg_case  = False
+
+#------------------------------------------------
+# replace_include callback o re.subn
+# Called for every #include statement
+#------------------------------------------------
+def replace_include(matchobj):
+    stmnt_in   = matchobj.group(0)
+    whitespace = matchobj.group(1) # Not always a single char
+    char1      = matchobj.group(2)
+    file_name  = matchobj.group(3)
+    char2      = matchobj.group(4)
+
+    if file_name.startswith('..'): return (stmnt_in)
+    if cfg_slash : file_name = file_name.replace('\\','/')
+
+    if cfg_case or cfg_quote:
+        key = file_name.lower();
+        while key.startswith("../"): key = key[3:]
+        key = "/" + key;
+
+        found_it = False
+        for f in filepaths_to_lookup:
+            if f.lower().endswith(key):
+                found_it = True
+                included_path = f
+                if cfg_case: file_name = included_path[-len(file_name):]
+                break
+
+        if not found_it:
+            if cfg_break:
+                log.error(filename)
+                log.error('Not found : '+ file_name)
+                exit(99)
+            included_path = '?'
+
+    if cfg_quote:
+        shall_use_quote = (included_path.startswith(ENGINE_SRC) and not included_path.startswith(PACKAGES)) or file_name[:2]=='..' or file_name[:4] == "Qix/"
+        if shall_use_quote:
+            char1 = '"'
+            char2 = '"'
+        else:
+            char1 = '<'
+            char2 = '>'
+
+    stmnt_out = "#include" + whitespace + char1 + file_name + char2
+
+    if stmnt_in != stmnt_out:
+        print("")
+        log.info(filename)
+        log.info("  FROM : " + stmnt_in);
+        log.info("  TO   : " + stmnt_out);
+        log.info("  FILE : " + included_path)
+
+    return stmnt_out
+
+#--------------------------------------
+# Main
+#--------------------------------------
+log.log_level = log.LOG_LEVEL_ALL
+
+#-----------------------
+# Handle Command Line
+#-----------------------
+sys.argv.pop(0)
+if len(sys.argv) == 0:
+    print(__doc__)
+    usage()
+    exit(1)
+
+for arg in sys.argv:
+    if   arg == "--slash": cfg_slash = True
+    elif arg == "--quote": cfg_quote = True
+    elif arg == "--case" : cfg_case  = True
+    elif arg == "--all"  :
+        cfg_slash = True
+        cfg_quote = True
+        cfg_case  = True
+    elif arg == "--dry"  : cfg_dry   = True
+    elif arg == "--break": cfg_break = True
+    elif arg == "--win"  : cfg_win   = True
+    else:
+        print("Unknown param : " + arg)
+        usage()
+        exit(2)
+
+#-----------------------
+# Setup Paths
+#-----------------------
+folders = ['',
+            'AppObject',
+            'Common','CoreEngine',
+            'DirectDiscovery',
+            'Filesystem',
+            'HttpParser','http-parser',
+            'Persistence',
+            'Persistence/impl',
+            'PersistencePlugins',
+            'PersistencePlugins/Plugins',
+            'PersistencePlugins/Plugins/QVF',
+            'PersistencePlugins/Plugins/QVFCommon',
+            'QvIntegration','Qfile','QlikMain','Qute','QvLib','QvLog',
+            'Reload',
+            'RestClient',
+            'Search','SearchQvIntegration','Serialization','Server','Server/Stats','SmartDataRepresentation','Socket',
+            'Uv']
+
+file_types = ['h','cpp','inl','iid','hxx']
+files_to_analyze = []
+for folder in folders:
+    for file_type in file_types:
+        files_to_analyze.extend(glob.glob(ENGINE_SRC + folder +'/*.' + file_type))
+
+files_to_analyze = [i.replace('\\','/') for i in files_to_analyze]
+log.info('Globbed ' + str(len(files_to_analyze))+' files to analyze')
+
+other_paths = [
+    'QvApp/*.h',
+    'QvBackEndAndQvCommon/*.h',
+    'QvServer/*.h',
+    'PerfCounters/*.h',
+    'PersistencePlugins/Plugins/QRS/*.h',
+    'PersistencePlugins/Plugins/QRS/HttpServer/*.h',
+    'PersistencePlugins/Plugins/QRS/RestClient/*.h',
+    'PersistencePlugins/Plugins/QRS/Sync/*.h',
+    'packages/rapidjson.0.11/build/native/include/rapidjson/*.h',
+    'packages/LibcurlPackage.1.0.2/build/native/include/*.h',
+    'packages/boost.1.59.0.1/include/boost-1_59/boost/*.hpp',
+    'packages/boost.1.59.0.1/include/boost-1_59/boost/filesystem/*.hpp',
+    'packages/LibuvPackage.1.6.3/build/native/include/*.h',
+    'packages/Codejock.16.4.0/*.h',
+    'ActiveValue/*.h','DbgUtils/*.h','QvFrontEnd/*.h','QvBackEndAndQvCommon/*.h','Server/Classic/*.h','QvConnect/*.h','Qix/*.h',
+    'QZip/*.h','SearchQixIntegration/*.h'
+    ]
+
+filepaths_to_lookup = files_to_analyze.copy()
+for other_path in other_paths: filepaths_to_lookup.extend(glob.glob(ENGINE_SRC + other_path))
+
+if (cfg_win and os.name == 'nt'):
+    filepaths_to_lookup.extend(glob.glob("C:/Program Files (x86)/Microsoft SDKs/Windows/v7.0A/include/*.h"))
+    filepaths_to_lookup.extend(glob.glob("C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/include/*"))
+    filepaths_to_lookup.extend(glob.glob("C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/include/sys/*"))
+    filepaths_to_lookup.extend(glob.glob("C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/atlmfc/include/*.h"))
+    filepaths_to_lookup.extend(glob.glob("C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/atlmfc/include/*.h"))
+    filepaths_to_lookup.extend(glob.glob("C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/atlmfc/src/mfc/*.h"))
+
+filepaths_to_lookup = [i.replace('\\','/') for i in filepaths_to_lookup]
+log.info('Globbed ' + str(len(filepaths_to_lookup))+' files that might be included')
+
+skipfiles = ['QlikView.h','QVForQVB.h',
+             'ScriptGlobals.h', 'LIBID_CLSID_IID.h','QvStrCore.cpp','ISerializer.cpp','OoXmlFileImpl.cpp','InternalPerformanceLogger.cpp']
+
+#-----------------------
+# Check duplicate names
+#-----------------------
+log.info("Checking for duplicate names")
+dict_basename_to_path = {}
+dict_lower_to_basename = {}
+dup = []
+for f in filepaths_to_lookup:
+    if (f.lower().endswith('.h')):
+        basename = os.path.basename(f)
+        basename_lower = basename.lower();
+
+        if not basename_lower in ["colorref.h","filestream.h"]:
+            if basename_lower in dict_lower_to_basename:
+                if basename != dict_lower_to_basename[basename_lower]:
+                    dup.append([dict_basename_to_path[dict_lower_to_basename[basename_lower]],f])
+
+            dict_basename_to_path[basename]=f
+            dict_lower_to_basename[basename_lower] = basename
+
+if len(dup)>0:
+    log.error("Found files having same name but differs case-wise!")
+    log.error("Resolve duplicates by renaming (git mv) as apropriate:")
+    for d in dup:
+        b0 = os.path.basename(d[0])
+        b1 = os.path.basename(d[1])
+        print("  " + b0 + " or " + b1 + ":")
+        print("    Files:")
+        print("      " + d[0])
+        print("      " + d[1])
+        print("    Commands:")
+        print("      git mv -f " + d[0] + " " + d[0][:-len(b1)] + b1)
+        print("      git mv -f " + d[1] + " " + d[1][:-len(b0)] + b0)
+        print("")
+    exit(1)
+
+#-----------------------
+# Analysis loop
+#-----------------------
+log.info("Analyzing files")
+include_count  = 0
+files_analyzed = 0
+files_changed  = 0
+for filename in files_to_analyze:
+    basename = os.path.basename(filename)
+    if (not basename in skipfiles) and (not basename.startswith('CppStub') or basename=='CppStub.cpp'):
+        files_analyzed+=1
+        with open (filename, "r") as rfile:
+            content = rfile.read();
+            result = re.subn('#include(\s+)(["<])([^">]+)(.)', replace_include, content)
+            include_count +=  result[1]
+            if result[0]!=content:
+                files_changed+=1
+                if not cfg_dry:
+                    with open (filename, "w") as wfile:
+                        wfile.write(result[0]);
+
+#-----------------------
+# Done
+#-----------------------
+print('')
+log.info(str(files_analyzed) + " files analyzed.")
+log.info(str(include_count) + " include statements analyzed.")
+if files_changed==0: log.info("All OK. No files changed.")
+else: log.info(str(files_changed) + " files changed"+(" (or would have been, if this hadn't been a dry run)" if cfg_dry else "") +".")

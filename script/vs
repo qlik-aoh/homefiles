@@ -1,0 +1,18 @@
+#!/bin/env bash
+set -ex
+
+# Change to the Engine root dir, in case file is started from some other location
+pushd .
+while ! test -d .git; do
+    cd ..
+done
+
+if [[ -f src/qlikview.sln ]]; then
+    SLN=src/qlikview.sln
+elif [[ -f prod/data/Engine/src/qlikview.sln ]]; then
+    SLN=prod/data/Engine/src/qlikview.sln
+fi
+start "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe" "${SLN}" $@
+
+# Restore working dir
+popd

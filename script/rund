@@ -1,0 +1,4 @@
+#!/bin/env bash
+set -ex
+
+./gradlew.bat runDesktop -Pnoengine $@

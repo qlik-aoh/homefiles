@@ -1,0 +1,52 @@
+#!/bin/env bash
+   
+   max_number_of_files=30
+   files_with_diffs=`git diff --name-only "$@"`
+   echo "$0 - $1 - $2 - $3 - $4"
+   if [[ $files_with_diffs != "" ]]; then
+           for filename in $files_with_diffs; do
+                   count=$((count + 1))
+           done
+           echo "$0: Found $count file(s) with differences"
+
+           if [[ $count -gt $max_number_of_files ]]; then
+                    count=0
+                    for filename in $files_with_diffs; do
+                            count=$((count + 1))
+                            echo "$count:$filename"
+                    done
+                    echo
+                    echo "$0: More than $max_number_of_files files differ, try limiting the scope."
+           else
+                   skip_next=false
+                   dry=false
+                   declare -a args
+                   for arg in "$@"; do
+                            # Remove argument "-- PATH" if present
+                            if [ "$arg" = "--" ]; then
+                                skip_next=true
+                                continue
+                            elif [ $skip_next = true ]; then
+                                skip_next=false
+                                continue
+                            elif [ "$arg" = "--dry" ]; then
+                                dry=true
+                            fi
+                            args[${#args[@]}]="$arg"
+                   done
+
+                    count=0
+                    for filename in $files_with_diffs; do
+                            count=$((count + 1))
+                            echo "$count:$filename"
+                            cmd="git difftool \"${args[@]}\" --no-prompt -- \"$filename\""
+                            if [ "$dry" = true ]; then
+                                    echo "    > "$cmd
+                            else
+                                    eval $cmd &
+                            fi
+                    done
+           fi
+   else
+           echo "$0: No differences to show"
+   fi
