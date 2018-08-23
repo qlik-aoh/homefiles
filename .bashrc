@@ -128,7 +128,7 @@ export PATH=${HOME}/bin:${PATH}
 export PS1='\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\n\$ '
 
 
-alias homefiles='/usr/bin/git --git-dir=/home/aoh/.homefiles/ --work-tree=/home/aoh'
+alias homefiles='/usr/bin/git --git-dir=$HOME/.homefiles/ --work-tree=$HOME'
 alias hf='homefiles'
 
 # ssh key forwarding forwards to a new SSH_AUTH_SOCK every connection, but a tmux/screen session
