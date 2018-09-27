@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
    
    max_number_of_files=30
    files_with_diffs=`git diff --name-only "$@"`

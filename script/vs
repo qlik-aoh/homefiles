@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 set -ex
 
 # Change to the Engine root dir, in case file is started from some other location
