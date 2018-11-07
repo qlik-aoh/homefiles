@@ -28,3 +28,7 @@ apt-get update
 apt install -y sublime-text
 
 
+# AWS
+apt-get install -y awscli
+go get -u github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login
+
