@@ -52,11 +52,15 @@ apt-get install -y cmake
 # Install coco-cpp
 apt-get install -y coco-cpp
 
-# Install golang
-apt-get install -y golang-go
-
 # Install libbz2
 apt-get install -y libbz2-1.0 libbz2-dev
+
+
+# Install golang
+add-apt-repository -y ppa:longsleep/golang-backports
+apt-get update
+apt-get install -y golang-go
+sudo -u `logname` echo export GO111MODULE=on >> ~/.bashrc
 
 
 # Install gradle pre-requisites, followed by gradle itself
