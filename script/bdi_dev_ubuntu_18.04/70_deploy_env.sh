@@ -48,3 +48,30 @@ wget -O /tmp/packer.zip https://releases.hashicorp.com/packer/1.3.1/packer_1.3.1
 unzip -o /tmp/packer.zip -d /opt/packer
 rm -f /usr/local/bin/packer; ln -s /opt/packer/packer /usr/local/bin/packer
 
+
+# AWS
+apt-get install -y awscli
+
+gopath=`go env GOPATH`
+go get -u github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login
+ln -sf ${gopath}/bin/docker-credential-ecr-login /usr/local/bin
+
+go get sigs.k8s.io/aws-iam-authenticator/cmd/aws-iam-authenticator
+ln -sf ${gopath}/bin/aws-iam-authenticator /usr/local/bin
+if [[ -f ${gopath}/heptio-authenticator-aws ]]; then 
+	ln -sf ${gopath}/bin/heptio-authenticator-aws /usr/local/bin
+else
+	ln -sf ${gopath}/bin/aws-iam-authenticator /usr/local/bin/heptio-authenticator-aws
+fi
+
+
+# Install eksctl
+curl -sL "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+mv /tmp/eksctl /usr/local/bin
+
+
+
+
+
+
+
