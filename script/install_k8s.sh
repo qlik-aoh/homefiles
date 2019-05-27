@@ -50,9 +50,20 @@ sudo -u ${SUDO_USER} mkdir -p ${SUDO_USER_HOME}/.docker
 # 2. Install kubectl
 snap install kubectl --classic
 
+# Shell completion for bash
+if [[ ! -f /etc/bash_completion.d/kubectl ]]; then
+    kubectl completion bash > /etc/bash_completion.d/kubectl
+fi
+
 
 # 3. Install helm
 snap install helm --classic
+
+# Shell completion for bash
+if [[ ! -f /etc/bash_completion.d/helm ]]; then
+    helm completion bash > /etc/bash_completion.d/helm
+fi
+
 
 
 # 4. Install minikube
