@@ -24,7 +24,7 @@ if [ "$AWS_REGION"="eu-west-1" ] ; then
     EFS_SERVER=fs-33b43ffa.efs.eu-west-1.amazonaws.com
 fi
 if [ "$AWS_REGION"="us-east-1" ] ; then
-    echo us-east-1 not yet supported
+    EFS_SERVER=fs-08886740.efs.us-east-1.amazonaws.com
 fi
 
 if [ "EFS_SERVER" ] ; then
