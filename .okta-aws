@@ -1,0 +1,14 @@
+[default]
+base-url = qlik.okta.com
+username = aoh
+factor = OKTA
+role = arn:aws:iam::579884529269:role/BDI-Developer-Role
+duration = 43200
+
+[admin]
+base-url = qlik.okta.com
+username = aoh
+factor = OKTA
+role = arn:aws:iam::579884529269:role/BDI-Admin-Role
+duration = 43200
+
