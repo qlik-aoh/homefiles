@@ -28,7 +28,7 @@
 
 
     // The path to a folder in which the CMake archives are downloaded and extracted
-    "cmake-tools-helper.cmake_download_path": "/home/aoh/.vscode/extensions/maddouri.cmake-tools-helper-0.1.1/cmake_download",
+    // "cmake-tools-helper.cmake_download_path": "/home/aoh/.vscode/extensions/maddouri.cmake-tools-helper-0.1.1/cmake_download",
 
     // "cmake.useCMakeServer": false,
 
@@ -37,18 +37,37 @@
     "cmake.buildDirectory": "${workspaceRoot}/build/${buildType}",
     //"cmake.buildDirectory": "${workspaceRoot}/build",
     "cmake.ctest.parallelJobs": 4,
-    "cmake.preferredGenerators": [
-        "Unix Makefiles",
-        "Ninja"
-    ],
+    // "cmake.preferredGenerators": [
+    //     "Unix Makefiles",
+    //     "Ninja"
+    // ],
     "cmake.configureArgs": [
-        "-DPACKAGES_DIR=${workspaceRoot}/build/packages"
-     ],
+        "-DPACKAGES_DIR=${workspaceRoot}/Packages"
+    ],
     "gitlens.advanced.messages": {
         "suppressShowKeyBindingsNotice": true
     },
     "workbench.colorTheme": "Visual Studio Dark",
     "explorer.confirmDelete": false,
-    "window.zoomLevel": -1,
-    "gitlens.historyExplorer.enabled": true
+    "window.zoomLevel": 1,
+    "gitlens.historyExplorer.enabled": true,
+    "cmake.cmakePath": "${workspaceRoot}/Packages/cmake/bin/cmake",
+    "cmake.buildBeforeRun": false,
+
+    "cmake.defaultVariants": {
+        "buildType": {
+            "description$": "The build type to use",
+            "debug": {
+                "oneWordSummary$": "Sense_Debug",
+                "description$": "Emit debug information without performing optimizations",
+                "buildType": "SENSE_DEBUG"
+            },
+            "release": {
+                "oneWordSummary$": "Sense_Release",
+                "description$": "Enable optimizations, omit debug info",
+                "buildType": "SENSE_RELEASE"
+            }
+        }
+    },
+
 }

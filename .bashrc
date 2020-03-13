@@ -119,17 +119,31 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# Qlik corectl completion
+if [ $(which corectl) ]; then
+  . <(corectl completion bash)
+fi
+
 #export PATH=/usr/lib/distcc:$PATH
 #export PATH=/usr/lib/ccache:$PATH
 #export CCACHE_PREFIX=distcc
 
 export PATH=${HOME}/bin:${PATH}
 
-export PS1='\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\n\$ '
+#export PS1='\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\n\$ '
+export PS1='\[\033[32m\]\u@\h\[\033[00m\]:\[\033[94m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\n\$ '
 
 
-alias homefiles='/usr/bin/git --git-dir=$HOME/.homefiles/ --work-tree=$HOME'
-alias hf='homefiles'
+
+# Use bash-completion, if available
+[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
+    . /usr/share/bash-completion/bash_completion
+
+
+# Kubectl shell completion, if available
+[[ $PS1 && -f ~/.kube/completion.bash.inc ]] && \
+	. ~/.kube/completion.bash.inc
+  
 
 # ssh key forwarding forwards to a new SSH_AUTH_SOCK every connection, but a tmux/screen session
 # typically lives more than one connection.
